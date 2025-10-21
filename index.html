@@ -17,20 +17,35 @@
     color: #fff;
     text-align: center;
   }
-  h1 { font-size: 3rem; margin-bottom: 1rem; transition: opacity 0.5s ease; }
-  .coming { color: lightGreen; }
-  .soon { color: #00ffff; }
-  .num { color: white; }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    transition: opacity 0.5s ease;
+  }
+  .coming { color: #ffffff; }
+  .soon { color: #00aaff; }
+  .num { color: #ffffff; }
   .min { color: orange; }
   .strike { color: #00ffff; }
+
   h2 { font-size: 2rem; margin-bottom: 2rem; }
-  .countdown-container { display: flex; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+
+  .countdown-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .circle { position: relative; width: 120px; height: 120px; }
   .circle svg { transform: rotate(-90deg); width: 120px; height: 120px; }
   .circle circle { fill: none; stroke-width: 10; stroke-linecap: round; }
   .circle .bg { stroke: #222; }
   .circle .progress { stroke: #00ffea; stroke-dasharray: 377; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
   .circle .time { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.3rem; text-align: center; }
+
   h3 { font-size: 1.5rem; transition: opacity 0.5s ease; }
 </style>
 </head>
@@ -78,9 +93,9 @@
 <h3 id="subText">Get ready to experience something extraordinary.</h3>
 
 <script>
-  // --- Fixed Countdown Timer ---
-  // Set your countdown target date (10 days from when you deploy)
-  const countdownDate = new Date("2025-11-01T00:00:00Z").getTime(); // Change this to your target date
+  // ---- FIXED COUNTDOWN ----
+  // Set your launch date here:
+  const countdownDate = new Date("2025-11-01T00:00:00Z").getTime(); // change this to your launch date
 
   function updateCountdown() {
     const now = new Date().getTime();
@@ -96,12 +111,13 @@
     document.getElementById("minutes").innerText = `${minutes}m`;
     document.getElementById("seconds").innerText = `${seconds}s`;
 
-    document.querySelector("#days-circle .progress").style.strokeDashoffset = 377 - (377 * days / 10);
+    // Circular progress
+    document.querySelector("#days-circle .progress").style.strokeDashoffset = 377 - (377 * days / 10); // change 10 if needed
     document.querySelector("#hours-circle .progress").style.strokeDashoffset = 377 - (377 * hours / 24);
     document.querySelector("#minutes-circle .progress").style.strokeDashoffset = 377 - (377 * minutes / 60);
     document.querySelector("#seconds-circle .progress").style.strokeDashoffset = 377 - (377 * seconds / 60);
 
-    if (distance < 0) {
+    if (distance <= 0) {
       clearInterval(timer);
       document.querySelector(".countdown-container").innerHTML = "<h2>We are live!</h2>";
     }
@@ -110,7 +126,7 @@
   const timer = setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // --- Rotating H1 Text ---
+  // ---- ROTATING H1 TEXT ----
   const mainTexts = [
     `<span class="coming">Coming</span> <span class="soon">Soon</span>`,
     `<span class="num">90</span><span class="min">Min</span><span class="strike">Strike</span>`
@@ -126,7 +142,7 @@
     }, 500);
   }, 3000);
 
-  // --- Rotating Subtext ---
+  // ---- ROTATING SUBTEXT ----
   const subTexts = [
     "Get ready to experience something extraordinary.",
     "The ultimate football experience is coming.",
