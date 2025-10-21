@@ -17,75 +17,21 @@
     color: #fff;
     text-align: center;
   }
-
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    transition: opacity 0.5s ease;
-  }
-
+  h1 { font-size: 3rem; margin-bottom: 1rem; transition: opacity 0.5s ease; }
   .coming { color: lightGreen; }
   .soon { color: #00ffff; }
-
   .num { color: white; }
   .min { color: orange; }
   .strike { color: #00ffff; }
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .countdown-container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .circle {
-    position: relative;
-    width: 120px;
-    height: 120px;
-  }
-
-  .circle svg {
-    transform: rotate(-90deg);
-    width: 120px;
-    height: 120px;
-  }
-
-  .circle circle {
-    fill: none;
-    stroke-width: 10;
-    stroke-linecap: round;
-  }
-
-  .circle .bg {
-    stroke: #222;
-  }
-
-  .circle .progress {
-    stroke: #00ffea;
-    stroke-dasharray: 377;
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 1s linear;
-  }
-
-  .circle .time {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.3rem;
-    text-align: center;
-  }
-
-  h3 {
-    font-size: 1.5rem;
-    transition: opacity 0.5s ease;
-  }
+  h2 { font-size: 2rem; margin-bottom: 2rem; }
+  .countdown-container { display: flex; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+  .circle { position: relative; width: 120px; height: 120px; }
+  .circle svg { transform: rotate(-90deg); width: 120px; height: 120px; }
+  .circle circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+  .circle .bg { stroke: #222; }
+  .circle .progress { stroke: #00ffea; stroke-dasharray: 377; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear; }
+  .circle .time { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.3rem; text-align: center; }
+  h3 { font-size: 1.5rem; transition: opacity 0.5s ease; }
 </style>
 </head>
 <body>
@@ -101,7 +47,7 @@
       <circle class="bg" cx="60" cy="60" r="60"></circle>
       <circle class="progress" cx="60" cy="60" r="60"></circle>
     </svg>
-    <div class="time" id="days">11d</div>
+    <div class="time" id="days">0d</div>
   </div>
 
   <div class="circle" id="hours-circle">
@@ -132,13 +78,13 @@
 <h3 id="subText">Get ready to experience something extraordinary.</h3>
 
 <script>
-  // --- Countdown Timer (11 days from now) ---
-  const now = new Date();
-  const countdownDate = new Date(now.getTime() + 11*24*60*60*1000);
+  // --- Fixed Countdown Timer ---
+  // Set your countdown target date (10 days from when you deploy)
+  const countdownDate = new Date("2025-11-01T00:00:00Z").getTime(); // Change this to your target date
 
   function updateCountdown() {
-    const nowTime = new Date().getTime();
-    const distance = countdownDate - nowTime;
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -150,7 +96,7 @@
     document.getElementById("minutes").innerText = `${minutes}m`;
     document.getElementById("seconds").innerText = `${seconds}s`;
 
-    document.querySelector("#days-circle .progress").style.strokeDashoffset = 377 - (377 * days / 11);
+    document.querySelector("#days-circle .progress").style.strokeDashoffset = 377 - (377 * days / 10);
     document.querySelector("#hours-circle .progress").style.strokeDashoffset = 377 - (377 * hours / 24);
     document.querySelector("#minutes-circle .progress").style.strokeDashoffset = 377 - (377 * minutes / 60);
     document.querySelector("#seconds-circle .progress").style.strokeDashoffset = 377 - (377 * seconds / 60);
@@ -160,17 +106,17 @@
       document.querySelector(".countdown-container").innerHTML = "<h2>We are live!</h2>";
     }
   }
-  updateCountdown();
-  const timer = setInterval(updateCountdown, 1000);
 
-  // --- Rotating H1 Text with colors ---
+  const timer = setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // --- Rotating H1 Text ---
   const mainTexts = [
     `<span class="coming">Coming</span> <span class="soon">Soon</span>`,
     `<span class="num">90</span><span class="min">Min</span><span class="strike">Strike</span>`
   ];
   let mainIndex = 0;
   const mainEl = document.getElementById("mainText");
-
   setInterval(() => {
     mainIndex = (mainIndex + 1) % mainTexts.length;
     mainEl.style.opacity = 0;
@@ -189,7 +135,6 @@
   ];
   let subIndex = 0;
   const subEl = document.getElementById("subText");
-
   setInterval(() => {
     subIndex = (subIndex + 1) % subTexts.length;
     subEl.style.opacity = 0;
