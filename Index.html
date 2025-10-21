@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coming Soon</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    transition: opacity 0.5s ease;
+  }
+
+  .coming { color: lightGreen; }
+  .soon { color: #00ffff; }
+
+  .num { color: white; }
+  .min { color: orange; }
+  .strike { color: #00ffff; }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .countdown-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+
+  .circle svg {
+    transform: rotate(-90deg);
+    width: 120px;
+    height: 120px;
+  }
+
+  .circle circle {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+  }
+
+  .circle .bg {
+    stroke: #222;
+  }
+
+  .circle .progress {
+    stroke: #00ffea;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .circle .time {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    transition: opacity 0.5s ease;
+  }
+</style>
+</head>
+<body>
+
+<h1 id="mainText">
+  <span class="coming">Coming</span> <span class="soon">Soon</span>
+</h1>
+<h2>The countdown has begun…</h2>
+
+<div class="countdown-container">
+  <div class="circle" id="days-circle">
+    <svg>
+      <circle class="bg" cx="60" cy="60" r="60"></circle>
+      <circle class="progress" cx="60" cy="60" r="60"></circle>
+    </svg>
+    <div class="time" id="days">11d</div>
+  </div>
+
+  <div class="circle" id="hours-circle">
+    <svg>
+      <circle class="bg" cx="60" cy="60" r="60"></circle>
+      <circle class="progress" cx="60" cy="60" r="60"></circle>
+    </svg>
+    <div class="time" id="hours">0h</div>
+  </div>
+
+  <div class="circle" id="minutes-circle">
+    <svg>
+      <circle class="bg" cx="60" cy="60" r="60"></circle>
+      <circle class="progress" cx="60" cy="60" r="60"></circle>
+    </svg>
+    <div class="time" id="minutes">0m</div>
+  </div>
+
+  <div class="circle" id="seconds-circle">
+    <svg>
+      <circle class="bg" cx="60" cy="60" r="60"></circle>
+      <circle class="progress" cx="60" cy="60" r="60"></circle>
+    </svg>
+    <div class="time" id="seconds">0s</div>
+  </div>
+</div>
+
+<h3 id="subText">Get ready to experience something extraordinary.</h3>
+
+<script>
+  // --- Countdown Timer (11 days from now) ---
+  const now = new Date();
+  const countdownDate = new Date(now.getTime() + 11*24*60*60*1000);
+
+  function updateCountdown() {
+    const nowTime = new Date().getTime();
+    const distance = countdownDate - nowTime;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = `${days}d`;
+    document.getElementById("hours").innerText = `${hours}h`;
+    document.getElementById("minutes").innerText = `${minutes}m`;
+    document.getElementById("seconds").innerText = `${seconds}s`;
+
+    document.querySelector("#days-circle .progress").style.strokeDashoffset = 377 - (377 * days / 11);
+    document.querySelector("#hours-circle .progress").style.strokeDashoffset = 377 - (377 * hours / 24);
+    document.querySelector("#minutes-circle .progress").style.strokeDashoffset = 377 - (377 * minutes / 60);
+    document.querySelector("#seconds-circle .progress").style.strokeDashoffset = 377 - (377 * seconds / 60);
+
+    if (distance < 0) {
+      clearInterval(timer);
+      document.querySelector(".countdown-container").innerHTML = "<h2>We are live!</h2>";
+    }
+  }
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+
+  // --- Rotating H1 Text with colors ---
+  const mainTexts = [
+    `<span class="coming">Coming</span> <span class="soon">Soon</span>`,
+    `<span class="num">90</span><span class="min">Min</span><span class="strike">Strike</span>`
+  ];
+  let mainIndex = 0;
+  const mainEl = document.getElementById("mainText");
+
+  setInterval(() => {
+    mainIndex = (mainIndex + 1) % mainTexts.length;
+    mainEl.style.opacity = 0;
+    setTimeout(() => {
+      mainEl.innerHTML = mainTexts[mainIndex];
+      mainEl.style.opacity = 1;
+    }, 500);
+  }, 3000);
+
+  // --- Rotating Subtext ---
+  const subTexts = [
+    "Get ready to experience something extraordinary.",
+    "The ultimate football experience is coming.",
+    "Prepare yourself for unmatched insights.",
+    "Your favorite football hub is almost here."
+  ];
+  let subIndex = 0;
+  const subEl = document.getElementById("subText");
+
+  setInterval(() => {
+    subIndex = (subIndex + 1) % subTexts.length;
+    subEl.style.opacity = 0;
+    setTimeout(() => {
+      subEl.textContent = subTexts[subIndex];
+      subEl.style.opacity = 1;
+    }, 500);
+  }, 4000);
+</script>
+
+</body>
+</html>
